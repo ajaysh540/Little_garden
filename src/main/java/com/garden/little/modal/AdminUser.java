@@ -20,7 +20,7 @@ public class AdminUser {
   String fullName;
 
   String email;
-  @JsonIgnore String password;
+  String password;
 
   @Column(name = "created_on")
   Date createdOn;

@@ -20,7 +20,7 @@ public class User {
   String fullName;
 
   String email;
-  @JsonIgnore String password;
+  String password;
 
   @Column(name = "created_on")
   Date createdOn;
@@ -31,6 +31,25 @@ public class User {
     this.email = email;
     this.password = password;
     this.createdOn = createdOn;
+  }
+
+  @Override
+  public String toString() {
+    return "User{"
+        + "userId="
+        + userId
+        + ", fullName='"
+        + fullName
+        + '\''
+        + ", email='"
+        + email
+        + '\''
+        + ", password='"
+        + password
+        + '\''
+        + ", createdOn="
+        + createdOn
+        + '}';
   }
 
   public User() {}

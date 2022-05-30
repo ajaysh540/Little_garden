@@ -69,7 +69,7 @@ public class ControllerTest {
                                 result.getResponse().getContentAsString());
                       });
     }
-  //
+
     @Test
     public void signUpAdmin() throws Exception {
       AdminUser adminUser = new AdminUser();

@@ -1,17 +1,25 @@
 package com.garden.little.controller;
 
 import com.garden.little.modal.AdminUser;
+import com.garden.little.modal.Cart;
+import com.garden.little.modal.CartData;
+import com.garden.little.modal.CartDetails;
+import com.garden.little.modal.Product;
 import com.garden.little.modal.User;
 import com.garden.little.modal.UserRequest;
 import com.garden.little.repository.AdminUserRepository;
+import com.garden.little.repository.CartRepository;
+import com.garden.little.repository.ProductRepo;
 import com.garden.little.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +27,8 @@ import java.util.stream.Collectors;
 public class Controller {
   @Autowired UserRepository userRepository;
   @Autowired AdminUserRepository adminUserRepository;
+  @Autowired ProductRepo productRepo;
+  @Autowired CartRepository cartRepository;
 
   @PostMapping("/login")
   public User loginUser(@RequestBody UserRequest userRequest) {
@@ -77,5 +87,44 @@ public class Controller {
     user = userRepository.save(user);
     user.setPassword("************");
     return user;
+  }
+
+  @GetMapping("/products")
+  public List<Product> getAllProducts() {
+    return productRepo.findAll();
+  }
+
+  @GetMapping("/cart/{userId}")
+  public CartDetails getUserCart(@PathVariable Integer userId) {
+    List<Cart> cart = cartRepository.findByUserId(userId);
+    CartDetails cartDetails = new CartDetails();
+    cartDetails.setUserId(userId);
+    List<CartData> cartDataList = new ArrayList<>();
+    cart.forEach(
+        cartData -> cartDataList.add(
+            new CartData(
+                cartData.getCount(), productRepo.findByProductId(cartData.getProductId()))));
+    cartDetails.setCartData(cartDataList);
+    return cartDetails;
+  }
+
+  @PostMapping("/cart/add")
+  public CartDetails addToCart(@RequestBody Cart cart) {
+    cartRepository.save(cart);
+    List<Cart> cartList = cartRepository.findByUserId(cart.getUserId());
+    CartDetails cartDetails = new CartDetails();
+    cartDetails.setUserId(cart.getUserId());
+    List<CartData> cartDataList = new ArrayList<>();
+    cartList.forEach(
+        cartData -> cartDataList.add(
+            new CartData(
+                cartData.getCount(), productRepo.findByProductId(cartData.getProductId()))));
+    cartDetails.setCartData(cartDataList);
+    return cartDetails;
+  }
+
+  @GetMapping("/product/{productId}")
+  public Product getProduct(@PathVariable Integer productId){
+    return productRepo.findByProductId(productId);
   }
 }

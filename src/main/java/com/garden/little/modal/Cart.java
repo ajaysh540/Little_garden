@@ -2,8 +2,11 @@ package com.garden.little.modal;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import java.io.Serializable;
 
 @Entity(name = "cart")
+@IdClass(CartId.class)
 public class Cart {
     @Id
     Integer userId;

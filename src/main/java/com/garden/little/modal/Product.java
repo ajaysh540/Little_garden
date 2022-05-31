@@ -7,64 +7,72 @@ import javax.persistence.Id;
 
 @Entity(name = "product")
 public class Product {
-    String name;
-    String desc;
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    Integer productId;
+  String name;
+  String description;
 
-    float cost;
-    String imageName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  Integer productId;
 
-    public String getName() {
-        return name;
-    }
+  Float cost;
+  String imageName;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getDesc() {
-        return desc;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
+  public String getDesc() {
+    return description;
+  }
 
-    public Integer getProductId() {
-        return productId;
-    }
+  public void setDesc(String desc) {
+    this.description = desc;
+  }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
+  public Integer getProductId() {
+    return productId;
+  }
 
-    public float getCost() {
-        return cost;
-    }
+  public void setProductId(Integer productId) {
+    this.productId = productId;
+  }
 
-    public void setCost(float cost) {
-        this.cost = cost;
-    }
+  public float getCost() {
+    return cost;
+  }
 
-    public String getImageName() {
-        return imageName;
-    }
+  public void setCost(float cost) {
+    this.cost = cost;
+  }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
+  public String getImageName() {
+    return imageName;
+  }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", productId=" + productId +
-                ", cost=" + cost +
-                ", imageName='" + imageName + '\'' +
-                '}';
-    }
+  public void setImageName(String imageName) {
+    this.imageName = imageName;
+  }
 
+  @Override
+  public String toString() {
+    return "Product{"
+        + "name='"
+        + name
+        + '\''
+        + ", desc='"
+        + description
+        + '\''
+        + ", productId="
+        + productId
+        + ", cost="
+        + cost
+        + ", imageName='"
+        + imageName
+        + '\''
+        + '}';
+  }
 }

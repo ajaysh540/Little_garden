@@ -127,4 +127,10 @@ public class Controller {
   public Product getProduct(@PathVariable Integer productId){
     return productRepo.findByProductId(productId);
   }
+  
+    @PostMapping("/product/update")
+  public List<Product> updateProduct(@RequestBody Product product) {
+    productRepo.save(product);
+    return productRepo.findAll();
+  }
 }

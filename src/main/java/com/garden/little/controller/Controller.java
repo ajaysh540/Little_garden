@@ -4,11 +4,13 @@ import com.garden.little.modal.AdminUser;
 import com.garden.little.modal.Cart;
 import com.garden.little.modal.CartData;
 import com.garden.little.modal.CartDetails;
+import com.garden.little.modal.ContactInfo;
 import com.garden.little.modal.Product;
 import com.garden.little.modal.User;
 import com.garden.little.modal.UserRequest;
 import com.garden.little.repository.AdminUserRepository;
 import com.garden.little.repository.CartRepository;
+import com.garden.little.repository.ContactInfoRepository;
 import com.garden.little.repository.ProductRepo;
 import com.garden.little.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ public class Controller {
   @Autowired AdminUserRepository adminUserRepository;
   @Autowired ProductRepo productRepo;
   @Autowired CartRepository cartRepository;
+  @Autowired ContactInfoRepository contactInfoRepository;
 
   @PostMapping("/login")
   public User loginUser(@RequestBody UserRequest userRequest) {
@@ -101,9 +104,10 @@ public class Controller {
     cartDetails.setUserId(userId);
     List<CartData> cartDataList = new ArrayList<>();
     cart.forEach(
-        cartData -> cartDataList.add(
-            new CartData(
-                cartData.getCount(), productRepo.findByProductId(cartData.getProductId()))));
+        cartData ->
+            cartDataList.add(
+                new CartData(
+                    cartData.getCount(), productRepo.findByProductId(cartData.getProductId()))));
     cartDetails.setCartData(cartDataList);
     return cartDetails;
   }
@@ -116,21 +120,32 @@ public class Controller {
     cartDetails.setUserId(cart.getUserId());
     List<CartData> cartDataList = new ArrayList<>();
     cartList.forEach(
-        cartData -> cartDataList.add(
-            new CartData(
-                cartData.getCount(), productRepo.findByProductId(cartData.getProductId()))));
+        cartData ->
+            cartDataList.add(
+                new CartData(
+                    cartData.getCount(), productRepo.findByProductId(cartData.getProductId()))));
     cartDetails.setCartData(cartDataList);
     return cartDetails;
   }
 
   @GetMapping("/product/{productId}")
-  public Product getProduct(@PathVariable Integer productId){
+  public Product getProduct(@PathVariable Integer productId) {
     return productRepo.findByProductId(productId);
   }
-  
-    @PostMapping("/product/update")
+
+  @PostMapping("/product/update")
   public List<Product> updateProduct(@RequestBody Product product) {
     productRepo.save(product);
     return productRepo.findAll();
+  }
+
+  @PostMapping("/contact/add")
+  public ContactInfo saveNewContactQuery(@RequestBody ContactInfo contactInfo) {
+    return contactInfoRepository.save(contactInfo);
+  }
+
+  @GetMapping("/contacts")
+  public List<ContactInfo> getAllContactQueries() {
+    return contactInfoRepository.findAll();
   }
 }

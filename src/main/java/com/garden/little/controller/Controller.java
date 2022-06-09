@@ -1,6 +1,7 @@
 package com.garden.little.controller;
 
 import com.garden.little.modal.AdminUser;
+import com.garden.little.modal.Blog;
 import com.garden.little.modal.Cart;
 import com.garden.little.modal.CartData;
 import com.garden.little.modal.CartDetails;
@@ -9,6 +10,7 @@ import com.garden.little.modal.Product;
 import com.garden.little.modal.User;
 import com.garden.little.modal.UserRequest;
 import com.garden.little.repository.AdminUserRepository;
+import com.garden.little.repository.BlogRepository;
 import com.garden.little.repository.CartRepository;
 import com.garden.little.repository.ContactInfoRepository;
 import com.garden.little.repository.ProductRepo;
@@ -32,6 +34,7 @@ public class Controller {
   @Autowired ProductRepo productRepo;
   @Autowired CartRepository cartRepository;
   @Autowired ContactInfoRepository contactInfoRepository;
+  @Autowired BlogRepository blogRepository;
 
   @PostMapping("/login")
   public User loginUser(@RequestBody UserRequest userRequest) {
@@ -147,5 +150,22 @@ public class Controller {
   @GetMapping("/contacts")
   public List<ContactInfo> getAllContactQueries() {
     return contactInfoRepository.findAll();
+  }
+
+  // Blog Details
+  @GetMapping("/blogs")
+  public List<Blog> getAllBlogs() {
+    return blogRepository.findAll();
+  }
+
+  @PostMapping("/blog/create")
+  public List<Blog> saveBlog(@RequestBody Blog blog) {
+    blogRepository.save(blog);
+    return blogRepository.findAll();
+  }
+
+  @GetMapping("/blog/{blogId}")
+  public Blog getBlogById(@PathVariable Integer blogId) {
+    return blogRepository.findByBlogId(blogId);
   }
 }
